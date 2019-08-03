@@ -108,4 +108,5 @@ static/results
 
 model/
 predict/
+predict_no_score/
 pretrained_model/

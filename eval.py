@@ -164,6 +164,7 @@ def main(argv=None):
                     im_fn, timer['net']*1000, timer['restore']*1000, timer['nms']*1000))
 
                 if boxes is not None:
+                    scores = boxes[:,8].reshape(-1)
                     boxes = boxes[:, :8].reshape((-1, 4, 2))
                     boxes[:, :, 0] /= ratio_w
                     boxes[:, :, 1] /= ratio_h
@@ -178,14 +179,16 @@ def main(argv=None):
                         '{}.txt'.format(
                             os.path.basename(im_fn).split('.')[0]))
 
+                    if len(boxes) != len(scores):
+                        raise RuntimeError('differ length boxes({}) and scores({})'.format(len(boxes), len(scores)))
                     with open(res_file, 'w') as f:
-                        for box in boxes:
+                        for box, score in zip(boxes, scores):
                             # to avoid submitting errors
                             box = sort_poly(box.astype(np.int32))
                             if np.linalg.norm(box[0] - box[1]) < 5 or np.linalg.norm(box[3]-box[0]) < 5:
                                 continue
-                            f.write('{},{},{},{},{},{},{},{}\r\n'.format(
-                                box[0, 0], box[0, 1], box[1, 0], box[1, 1], box[2, 0], box[2, 1], box[3, 0], box[3, 1],
+                            f.write('{},{},{},{},{},{},{},{},{}\r\n'.format(
+                                box[0, 0], box[0, 1], box[1, 0], box[1, 1], box[2, 0], box[2, 1], box[3, 0], box[3, 1], score
                             ))
                             cv2.polylines(im[:, :, ::-1], [box.astype(np.int32).reshape((-1, 1, 2))], True, color=(255, 255, 0), thickness=1)
                 if not FLAGS.no_write_images:
