@@ -106,7 +106,7 @@ ENV/
 # result files for demo
 static/results
 
-model/
+model*/
 predict/
 predict_no_score/
 pretrained_model/

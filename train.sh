@@ -7,6 +7,7 @@ python3 multigpu_train.py \
     --training_data_path=../../data/for_EAST/train/ \
     --geometry=RBOX \
     --learning_rate=0.0001 \
+    --max_steps=20000 \
     --num_readers=10 \
     --pretrained_model_path=./pretrained_model/resnet_v1_50.ckpt
 
