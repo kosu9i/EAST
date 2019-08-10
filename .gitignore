@@ -110,3 +110,8 @@ model*/
 predict/
 predict_no_score/
 pretrained_model/
+nohup.out
+predict_test_*/
+predict_valid_*/
+ref_valid_for_metrics/
+
